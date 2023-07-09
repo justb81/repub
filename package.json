@@ -16,7 +16,7 @@
     "test": "jest --silent --coverage",
     "build:wasm": "wasm-pack build -t web && cp pkg/repub_bind_bg.wasm .",
     "build:images": "<<< $'16\n32\n48\n128' xargs -I@ convert -background none -resize @x@ public/repub.svg images/repub_@.png && convert images/repub_*.png favicon.ico",
-    "build:bundle": "esbuild src/background.ts --outfile=background.js --bundle --minify && esbuild src/offscreen.ts --outfile=offscreen.js --bundle --minify --define:import.meta.url=location.origin",
+    "build:bundle": "esbuild src/background.ts --outfile=background.js --bundle --minify && esbuild src/offscreen.ts --outfile=offscreen.js --bundle --minify --define:import.meta.url=location.origin && esbuild src/worker.ts --outfile=worker.js --bundle --minify --define:import.meta.url=location.origin",
     "build:options": "pnpify next build && next export",
     "build": "yarn build:images && yarn build:wasm && yarn build:bundle && yarn build:options",
     "prepack": "yarn build && yarn lint && yarn test",
@@ -29,6 +29,7 @@
     "/manifest.json",
     "/offscreen.html",
     "/offscreen.js",
+    "/worker.js",
     "/out/**/*",
     "/repub_bind_bg.wasm"
   ],

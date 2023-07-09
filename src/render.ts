@@ -1,5 +1,5 @@
 import { fromByteArray, toByteArray } from "base64-js";
-import { Message, Response } from "./messages";
+import { OffscreenMessage, Response } from "./messages";
 
 let num = 0;
 let offscreen: null | Promise<void> = null;
@@ -13,14 +13,15 @@ export async function render(
   if (offscreen === null) {
     offscreen = chrome.offscreen.createDocument({
       url: "/offscreen.html",
-      reasons: [chrome.offscreen.Reason.DOM_PARSER],
-      justification: "Parse DOM",
+      // @ts-expect-error this reason isn't in the type
+      reasons: [chrome.offscreen.Reason.WORKERS as chrome.offscreen.Reason],
+      justification: "workers for parallel wasm",
     });
   }
   await offscreen;
 
   try {
-    const msg: Message = fromByteArray(new Uint8Array(mhtml));
+    const msg: OffscreenMessage = fromByteArray(new Uint8Array(mhtml));
     const resp: Response = await chrome.runtime.sendMessage(msg);
     if (resp.success) {
       const { epub, title } = resp;
