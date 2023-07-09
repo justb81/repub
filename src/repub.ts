@@ -3,27 +3,6 @@ import { ImageHandling } from "./options";
 
 const ini = (async () => await init())();
 
-// FIXME move this into rust
-const remarkableCss = `
-p {
-  margin-top: 1em;
-  margin-bottom: 1em;
-}
-
-ul, ol {
-  padding: 1em;
-}
-
-ul li, ol li {
-  margin-left: 1.5em;
-  padding-left: 0.5em;
-}
-
-figcaption {
-  font-size: 0.5rem;
-  font-style: italic;
-}`;
-
 export async function repub(
   mhtml: Uint8Array,
   {
@@ -55,7 +34,7 @@ export async function repub(
       imageHrefSimilarityThreshold,
       imageBrightness,
       filterLinks,
-      rmCss ? remarkableCss : "",
+      rmCss,
       hrefHeader,
       bylineHeader,
       coverHeader,

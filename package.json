@@ -13,7 +13,7 @@
     "lint:tsc": "pnpify tsc",
     "lint:es": "pnpify eslint --cache 'src/*.ts' 'pages/*.tsx' 'components/*.tsx'",
     "lint": "yarn lint:tsc && yarn lint:es && yarn lint:wasm",
-    "test": "jest --silent --coverage",
+    "test": "jest --silent --coverage && cargo test",
     "build:wasm": "wasm-pack build -t web && cp pkg/repub_bind_bg.wasm .",
     "build:images": "<<< $'16\n32\n48\n128' xargs -I@ convert -background none -resize @x@ public/repub.svg images/repub_@.png && convert images/repub_*.png favicon.ico",
     "build:bundle": "esbuild src/background.ts --outfile=background.js --bundle --minify && esbuild src/offscreen.ts --outfile=offscreen.js --bundle --minify --define:import.meta.url=location.origin && esbuild src/worker.ts --outfile=worker.js --bundle --minify --define:import.meta.url=location.origin",

@@ -16,7 +16,7 @@ pub fn render(
     href_sim_thresh: f64,
     image_brightness: f64,
     filter_links: bool,
-    css: &str,
+    rm_css: bool,
     href_header: bool,
     byline_header: bool,
     cover_header: bool,
@@ -27,6 +27,28 @@ pub fn render(
         "keep" => Ok(ImageHandling::Keep),
         _ => Err("invalid image handling"),
     }?;
+    let css = if rm_css {
+        "p {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+ul, ol {
+  padding: 1em;
+}
+
+ul li, ol li {
+  margin-left: 1.5em;
+  padding-left: 0.5em;
+}
+
+figcaption {
+  font-size: 0.5rem;
+  font-style: italic;
+}"
+    } else {
+        ""
+    };
     let repub = Repub {
         include_url: href_header,
         include_title: true,
