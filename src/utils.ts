@@ -49,6 +49,7 @@ export function errString(err: unknown): string {
   } else if (typeof err === "function") {
     return `function error: ${err.name}`;
   } else {
+    // eslint-disable-next-line @typescript-eslint/no-base-to-string
     return err.toString();
   }
 }
