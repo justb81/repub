@@ -1,4 +1,4 @@
-use repub::{EpubVersion, FilterType, ImageHandling, ImageOutputFormat, Repub};
+use repub::{EpubVersion, FilterType, ImageHandling, ImageOutputFormat, ImgTransform, Repub};
 use std::str;
 use wasm_bindgen::prelude::*;
 
@@ -57,12 +57,14 @@ figcaption {
         strip_links: filter_links,
         href_sim_thresh,
         image_handling,
-        image_format: ImageOutputFormat::Jpeg(90),
         css,
-        max_width: 1404,
-        max_height: 1872,
-        filter_type: FilterType::Triangle,
-        brighten: image_brightness as f32,
+        transform: ImgTransform {
+            brightness: image_brightness as f32,
+            max_width: 1404,
+            max_height: 1872,
+            filter_type: FilterType::Triangle,
+            output_format: ImageOutputFormat::Jpeg(90),
+        },
         epub_version: EpubVersion::V30,
     };
     let mhtml_str = str::from_utf8(mhtml).map_err(|_| "invalid utf8")?;

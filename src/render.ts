@@ -15,7 +15,6 @@ export async function render(
   if (offscreen === null) {
     offscreen = chrome.offscreen.createDocument({
       url: "/offscreen.html",
-      // @ts-expect-error this reason isn't in the type
       reasons: [chrome.offscreen.Reason.WORKERS as chrome.offscreen.Reason],
       justification: "workers for parallel wasm",
     });
