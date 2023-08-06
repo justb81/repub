@@ -1,8 +1,7 @@
-import { OffscreenMessage, Response, WorkerMessage } from "./messages";
-import { getOptions } from "./options";
+import { Message, Response } from "./messages";
 import { errString } from "./utils";
 
-function callWorker(message: WorkerMessage): Promise<Response> {
+function callWorker(message: Message): Promise<Response> {
   const worker = new Worker("/worker.js");
   return new Promise((resolve) => {
     worker.onmessage = (recv: MessageEvent<Response>) => resolve(recv.data);
@@ -11,15 +10,10 @@ function callWorker(message: WorkerMessage): Promise<Response> {
 }
 
 chrome.runtime.onMessage.addListener(
-  (
-    msg: OffscreenMessage,
-    _: unknown,
-    sendResponse: (msg: Response) => void,
-  ): true => {
+  (msg: Message, _: unknown, sendResponse: (msg: Response) => void): true => {
     void (async () => {
       try {
-        const opts = await getOptions();
-        const resp = await callWorker({ mhtml: msg, ...opts });
+        const resp = await callWorker(msg);
         sendResponse(resp);
       } catch (ex) {
         sendResponse({

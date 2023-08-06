@@ -41,10 +41,8 @@ export type ImageHandling = "strip" | "filter" | "keep";
 export type Orientation = "portrait" | "landscape";
 export type Cover = "first" | "visited";
 
-export interface Options {
-  deviceToken: string;
-  outputStyle: OutputStyle;
-  // how we generate the epub
+/** how we generate the epub */
+export interface EpubOptions {
   imageHandling: ImageHandling;
   imageBrightness: number;
   imageHrefSimilarityThreshold: number;
@@ -53,6 +51,11 @@ export interface Options {
   coverHeader: boolean;
   rmCss: boolean;
   filterLinks: boolean;
+}
+
+export interface Options extends EpubOptions {
+  deviceToken: string;
+  outputStyle: OutputStyle;
   // how we upload the epub
   margins: number;
   lineHeight: number;
@@ -65,10 +68,7 @@ export interface Options {
   downloadAsk: boolean;
 }
 
-export const defaultOptions: Options = {
-  deviceToken: "",
-  outputStyle: "upload",
-  // how we generate the epub
+export const defaultEpubOptions: Readonly<EpubOptions> = {
   imageHandling: "filter",
   imageHrefSimilarityThreshold: 0.2,
   imageBrightness: 1.25,
@@ -77,6 +77,12 @@ export const defaultOptions: Options = {
   coverHeader: true,
   rmCss: true,
   filterLinks: true,
+};
+
+export const defaultOptions: Readonly<Options> = {
+  deviceToken: "",
+  outputStyle: "upload",
+  ...defaultEpubOptions,
   // how we upload the epub
   margins: 180,
   lineHeight: 100,

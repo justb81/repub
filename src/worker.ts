@@ -1,9 +1,9 @@
 import { fromByteArray, toByteArray } from "base64-js";
-import { Response, WorkerMessage } from "./messages";
+import { Message, Response } from "./messages";
 import { repub } from "./repub";
 import { errString } from "./utils";
 
-onmessage = async (msg: MessageEvent<WorkerMessage>) => {
+onmessage = async (msg: MessageEvent<Message>) => {
   try {
     const { mhtml, ...options } = msg.data;
     const raw = toByteArray(mhtml);

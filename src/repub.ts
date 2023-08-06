@@ -1,5 +1,5 @@
 import { default as init, render as rend } from "../pkg/repub_bind";
-import { ImageHandling } from "./options";
+import { EpubOptions } from "./options";
 
 const ini = (async () => await init())();
 
@@ -14,16 +14,7 @@ export async function repub(
     hrefHeader,
     bylineHeader,
     coverHeader,
-  }: {
-    imageHandling: ImageHandling;
-    imageBrightness: number;
-    imageHrefSimilarityThreshold: number;
-    hrefHeader: boolean;
-    bylineHeader: boolean;
-    coverHeader: boolean;
-    rmCss: boolean;
-    filterLinks: boolean;
-  },
+  }: Readonly<EpubOptions>,
 ): Promise<{ epub: Uint8Array; title?: string }> {
   let res;
   try {

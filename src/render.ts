@@ -1,5 +1,6 @@
 import { fromByteArray, toByteArray } from "base64-js";
-import { OffscreenMessage, Response } from "./messages";
+import { Message, Response } from "./messages";
+import { EpubOptions } from "./options";
 
 let num = 0;
 let offscreen: null | Promise<void> = null;
@@ -7,6 +8,7 @@ let closing: null | Promise<void> = null;
 
 export async function render(
   mhtml: ArrayBuffer,
+  epubOpts: Readonly<EpubOptions>,
 ): Promise<{ epub: ArrayBuffer; title?: string }> {
   await closing;
   num++;
@@ -21,7 +23,10 @@ export async function render(
   await offscreen;
 
   try {
-    const msg: OffscreenMessage = fromByteArray(new Uint8Array(mhtml));
+    const msg: Message = {
+      mhtml: fromByteArray(new Uint8Array(mhtml)),
+      ...epubOpts,
+    };
     const resp: Response = await chrome.runtime.sendMessage(msg);
     if (resp.success) {
       const { epub, title } = resp;
